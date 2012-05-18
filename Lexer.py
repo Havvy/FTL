@@ -40,7 +40,7 @@ def flux_tokenizer(stream=char_stream, fluxor='parse_me.txt'):
             current.consumed += char
 
         #TODO: Used for presentations, remove for production
-        #print(current)
+        print(current)
 
     token_stream.append(current)
     token_stream.append(Tokens.EOF())

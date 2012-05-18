@@ -21,7 +21,11 @@ class Token(object):
            If a match is found,
         """
         for key in self.table.keys():
-            if re.match(key, value):
+            print('-----------------------')
+            print("Value: {}, Key: {}".format(value, key))
+            print(re.findall(key, value))
+            print('-----------------------')
+            if re.findall(key, value):
                 return self.table[key]
 
 
@@ -67,7 +71,7 @@ NEW_LINE.table = {"\)": TEMPLATE_CLOSE_PAREN}
 TEMPLATE_CLOSE_PAREN.table = {'\n': NEW_LINE}
 
 TEMPLATE_OPEN_PAREN.table = {"\)": TEMPLATE_CLOSE_PAREN, '\n': NEW_LINE,
-                             "[a-zA-Z0-9 ]": ARG}
+                            "^[^)]$": ARG}
 
 AT_TEXT.table = {"template\(": TEMPLATE_OPEN_PAREN, '\n': NEW_LINE}
 
