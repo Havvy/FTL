@@ -8,7 +8,7 @@
         http://flux.referata.com/
 """
 
-import Tokens
+from FTL import Tokens
 
 
 def char_stream(txt):
@@ -21,8 +21,8 @@ def char_stream(txt):
 
 def flux_tokenizer(stream=char_stream, fluxor='parse_me.txt'):
     """Reads characters from a stream
-    Characters are matched against tokens and a list
-    of tokens is returned.
+       Characters are matched against tokens and a list
+       of tokens is returned.
     """
 
     previous_state = current = Tokens.FLUX_INIT()
