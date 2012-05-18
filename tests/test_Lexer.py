@@ -32,6 +32,7 @@ class TestTokenizer():
     def test_template_lexing(self, template_stream):
         tokens = Lexer.flux_tokenizer(template_stream)
         results = [str(x) for x in tokens]
+        print(results)
         assert  results == ['FLUX_INIT::', 'AT::@', 'AT_TEXT::template',
                             'TEMPLATE_OPEN_PAREN::(',
                             'TEMPLATE_CLOSE_PAREN::)',
