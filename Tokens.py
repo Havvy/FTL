@@ -21,16 +21,28 @@ class Token(object):
            If a match is found,
         """
         for key in self.table.keys():
-            print('-----------------------')
-            print("Value: {}, Key: {}".format(value, key))
-            print(re.findall(key, value))
-            print('-----------------------')
+            #print('-----------------------')
+            #print("Value: {}, Key: {}".format(value, key))
+            #print(re.findall(key, value))
+            #print('-----------------------')
             if re.findall(key, value):
                 return self.table[key]
 
 
 # Skeleton tokens
 class NEW_LINE(Token):
+    pass
+
+
+class ARG_COMMA(Token):
+    pass
+
+
+class ARG_EQUALS(Token):
+    pass
+
+
+class DEFAULT_ARG(Token):
     pass
 
 
@@ -68,8 +80,13 @@ class FLUX_INIT(Token):
 #Tables! 'cause cyclic dependencies suck
 NEW_LINE.table = {"\)": TEMPLATE_CLOSE_PAREN}
 
+ARG_COMMA.table = {",": ARG, '\n': NEW_LINE, "^[^)]$": ARG}
+
+ARG_EQUALS.table = {"^[^ ]$": DEFAULT_ARG}
+
 TEMPLATE_CLOSE_PAREN.table = {'\n': NEW_LINE}
 
+# "^[^)]$" Matches a single character that is not a close paren
 TEMPLATE_OPEN_PAREN.table = {"\)": TEMPLATE_CLOSE_PAREN, '\n': NEW_LINE,
                             "^[^)]$": ARG}
 
@@ -77,7 +94,10 @@ AT_TEXT.table = {"template\(": TEMPLATE_OPEN_PAREN, '\n': NEW_LINE}
 
 AT.table = {"[a-zA-Z0-9 ]": AT_TEXT, '\n': NEW_LINE}
 
-ARG.table = {"\)": TEMPLATE_CLOSE_PAREN, '\n': NEW_LINE, ',': ARG}
+ARG.table = {"\)": TEMPLATE_CLOSE_PAREN, '\n': NEW_LINE,
+            ',': ARG_COMMA, "=": ARG_EQUALS}
+
+DEFAULT_ARG.table = {",": ARG_COMMA, "\)": TEMPLATE_CLOSE_PAREN}
 
 EOF.table = {}
 
