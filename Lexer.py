@@ -34,7 +34,9 @@ def flux_tokenizer(stream=char_stream, fluxor='parse_me.txt'):
 
         if new:
             previous_state = current
-            current = new(char)
+            # Drop spaces, but instantiate the next Token with the next
+            # char.
+            current = new(char) if char != ' ' else new()
             token_stream.append(previous_state)
         else:
             current.consumed += char
@@ -47,4 +49,6 @@ def flux_tokenizer(stream=char_stream, fluxor='parse_me.txt'):
     return token_stream
 
 if __name__ == '__main__':
+    with open('parse_me.txt') as to_parse:
+        print('\nParsing:' + ''.join(to_parse), end='\n\n')
     print([str(x) for x in flux_tokenizer()])
