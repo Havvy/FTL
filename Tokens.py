@@ -38,7 +38,7 @@ class TEMPLATE_OPEN_PAREN(Token):
 
 
 class AT_TEXT(Token):
-    table = {"\(": TEMPLATE_OPEN_PAREN, '\n': NEW_LINE}
+    table = {"template\(": TEMPLATE_OPEN_PAREN, '\n': NEW_LINE}
 
 
 class AT(Token):

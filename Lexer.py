@@ -29,7 +29,8 @@ def flux_tokenizer(stream=char_stream, fluxor='parse_me.txt'):
     token_stream = []
 
     for char in stream(fluxor):
-        new = current.lookup(char)
+        consumed = current.lookup(current.consumed + char)
+        new = consumed if consumed else current.lookup(char)
 
         if new:
             previous_state = current
