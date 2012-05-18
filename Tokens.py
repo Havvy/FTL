@@ -25,32 +25,56 @@ class Token(object):
                 return self.table[key]
 
 
+# Skeleton tokens
 class NEW_LINE(Token):
-    table = {}
+    pass
 
 
 class TEMPLATE_CLOSE_PAREN(Token):
-    table = {'\n': NEW_LINE}
+    pass
 
 
 class TEMPLATE_OPEN_PAREN(Token):
-    table = {"\)": TEMPLATE_CLOSE_PAREN, '\n': NEW_LINE}
+    pass
 
 
 class AT_TEXT(Token):
-    table = {"\(": TEMPLATE_OPEN_PAREN, '\n': NEW_LINE}
+    pass
 
 
 class AT(Token):
     """The @ character was read"""
-    table = {"[a-zA-Z0-9 ]": AT_TEXT, '\n': NEW_LINE}
+    pass
+
+
+class ARG(Token):
+    pass
 
 
 class EOF(Token):
     """End of file token ends each token stream"""
-    table = {}
+    pass
 
 
 class FLUX_INIT(Token):
     """The first token added to the token stream"""
-    table = {"\@": AT, '\n': NEW_LINE}
+    pass
+
+
+#Tables! 'cause cyclic dependencies suck
+NEW_LINE.table = {"\)": TEMPLATE_CLOSE_PAREN}
+
+TEMPLATE_CLOSE_PAREN.table = {'\n': NEW_LINE}
+
+TEMPLATE_OPEN_PAREN.table = {"\)": TEMPLATE_CLOSE_PAREN, '\n': NEW_LINE,
+                             "[a-zA-Z0-9 ]": ARG}
+
+AT_TEXT.table = {"template\(": TEMPLATE_OPEN_PAREN, '\n': NEW_LINE}
+
+AT.table = {"[a-zA-Z0-9 ]": AT_TEXT, '\n': NEW_LINE}
+
+ARG.table = {"\)": TEMPLATE_CLOSE_PAREN, '\n': NEW_LINE, ',': ARG}
+
+EOF.table = {}
+
+FLUX_INIT.table = {"\@": AT, '\n': NEW_LINE}
