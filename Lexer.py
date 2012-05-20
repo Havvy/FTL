@@ -14,19 +14,19 @@ debug = True
 def char_stream(txt):
     """Yields a stream of characters from a given text file"""
     with open(txt) as stream:
-        for line in stream:
-            for char in line:
-                yield char
+        for char in stream:
+            yield char
 
 
-def flux_tokenizer(stream=char_stream, fluxor='examples/function with arguments.flux'):
+def flux_tokenizer(stream=char_stream,
+                   fluxor='examples/function with arguments.flux'):
     """Reads characters from a stream
        Characters are matched against tokens and a list
        of tokens is returned.
     """
 
     # Initialize the current state to the initial token.
-    previous_state = current = Tokens.FLUX_INIT()
+    previous_state = current = Tokens.INIT()
     token_stream = []
     context = []; # Treat as a stack.
 

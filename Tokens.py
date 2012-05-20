@@ -26,34 +26,34 @@ class Token(object):
         """str(Token) => TokenName::CharsConsumed"""
         return str(self.__class__).split('.')[-1][:-2] + '::' + self.consumed
 
-    def lookup(self, value):
+    def lookup(self, char):
         """Compared values against regex keys in a Token's table
            If a match is found,
         """
-        for key in self.table: #.keys() not needed in Py3.
+        for regex, token in self.table.items():
             #if debug:
             #    print('-----------------------')
-            #    print("Value: {}, Key: {}".format(value, key))
-            #    print(re.findall(key, value))
+            #    print("Value: {}, Key: {}".format(char, regex))
+            #    print(re.findall(regex, char))
             #    print('-----------------------')
-            if re.findall(key, value):
-                return self.table[key]
+            if re.findall(regex, char):
+                return token
 
 
-# Skeleton tokens, actually defined afterwards.
+# Token declarations. Main data declared afterwards.
 class NEW_LINE(Token):
     pass
 
 
-class ARG_COMMA(Token):
+class ARGUMENT_COMMA(Token):
     pass
 
 
-class ARG_EQUALS(Token):
+class ARGUMENT_EQUALS(Token):
     pass
 
 
-class DEFAULT_ARG(Token):
+class ANONYMOUS_ARGUMENT(Token):
     pass
 
 
@@ -74,7 +74,7 @@ class AT(Token):
     pass
 
 
-class ARG(Token):
+class ARGUMENT(Token):
     pass
 
 
@@ -83,32 +83,52 @@ class EOF(Token):
     pass
 
 
-class FLUX_INIT(Token):
+class INIT(Token):
     """The first token added to the token stream"""
     pass
 
 
-#Tables! 'cause cyclic dependencies suck
-NEW_LINE.table = {close_paren: TEMPLATE_CLOSE_PAREN}
+# Tables declared here to allow cyclic dependencies.
+NEW_LINE.table = {
+    close_paren: TEMPLATE_CLOSE_PAREN
+    }
 
-ARG_COMMA.table = {comma: ARG, new_line: NEW_LINE, not_close_paren: ARG}
+ARGUMENT_COMMA.table = {
+    comma: ARGUMENT,
+    new_line: NEW_LINE,
+    not_close_paren: ARGUMENT}
 
-ARG_EQUALS.table = {"^[^ ]$": DEFAULT_ARG}
+ARGUMENT_EQUALS.table = {
+    "^[^ ]$": ANONYMOUS_ARGUMENT}
 
-TEMPLATE_CLOSE_PAREN.table = {new_line: NEW_LINE}
+TEMPLATE_CLOSE_PAREN.table = {
+    new_line: NEW_LINE}
 
-TEMPLATE_OPEN_PAREN.table = {close_paren: TEMPLATE_CLOSE_PAREN, new_line: NEW_LINE,
-                            not_close_paren: ARG}
+TEMPLATE_OPEN_PAREN.table = {
+    close_paren: TEMPLATE_CLOSE_PAREN,
+    new_line: NEW_LINE,
+    not_close_paren: ARGUMENT}
 
-AT_TEXT.table = {"template\(": TEMPLATE_OPEN_PAREN, new_line: NEW_LINE}
+AT_TEXT.table = {
+    "template\(": TEMPLATE_OPEN_PAREN,
+    new_line: NEW_LINE}
 
-AT.table = {text: AT_TEXT, new_line: NEW_LINE}
+AT.table = {
+    text: AT_TEXT,
+    new_line: NEW_LINE}
 
-ARG.table = {close_paren: TEMPLATE_CLOSE_PAREN, new_line: NEW_LINE,
-            comma: ARG_COMMA, equals: ARG_EQUALS}
+ARGUMENT.table = {
+    close_paren: TEMPLATE_CLOSE_PAREN,
+    new_line: NEW_LINE,
+    comma: ARGUMENT_COMMA,
+    equals: ARGUMENT_EQUALS}
 
-DEFAULT_ARG.table = {comma: ARG_COMMA, close_paren: TEMPLATE_CLOSE_PAREN}
+ANONYMOUS_ARGUMENT.table = {
+    comma: ARGUMENT_COMMA,
+    close_paren: TEMPLATE_CLOSE_PAREN}
 
 EOF.table = {}
 
-FLUX_INIT.table = {at: AT, new_line: NEW_LINE}
+INIT.table = {
+    at: AT,
+    new_line: NEW_LINE}
