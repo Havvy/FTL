@@ -10,6 +10,7 @@
 
 from flux import Tokens
 debug = True
+example = "examples/complex function.flux"
 
 def char_stream(txt):
     """Yields a stream of characters from a given text file"""
@@ -19,39 +20,38 @@ def char_stream(txt):
                 yield char
 
 
-def flux_tokenizer(stream=char_stream,
-                   fluxor='examples/function with arguments.flux'):
+def tokenize(stream=char_stream,
+                   fluxor=example):
     """Reads characters from a stream
        Characters are matched against tokens and a list
        of tokens is returned.
     """
 
     # Initialize the current state to the initial token.
-    previous_state = current = Tokens.INIT()
+    state = Tokens.FLUX()
     token_stream = []
     context = []; # Treat as a stack.
 
     for char in stream(fluxor):
-        consumed = current.lookup(current.consumed + char)
-        # when is this true/false ?
-        new = consumed if consumed else current.lookup(char)
+        consumed = state.getNextToken(state.consumed + char)
+        # consumed is None if not a token change.
+        next_state = consumed if consumed else state.getNextToken(char)
 
-        if new:
-            previous_state = current
+        if next_state:
             # Drop spaces, but instantiate the next Token with the next char.
-            current = new(char) if char != ' ' else new()
-            token_stream.append(previous_state)
+            token_stream.append(state)
+            state = next_state(char) if char != ' ' else next_token()
         else:
-            current.consumed += char
+            state.consumed += char
 
         if debug:
-            print(current)
+            print(state)
 
-    token_stream.append(current)
+    token_stream.append(state)
     token_stream.append(Tokens.EOF())
     return token_stream
 
 if __name__ == '__main__':
-    with open('./examples/function with arguments.flux') as to_parse:
+    with open(example) as to_parse:
         print('\nParsing:' + ''.join(to_parse), end='\n\n')
-    print([str(x) for x in flux_tokenizer()])
+    print([str(x) for x in tokenize()])
