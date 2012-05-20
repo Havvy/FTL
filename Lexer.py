@@ -14,8 +14,9 @@ debug = True
 def char_stream(txt):
     """Yields a stream of characters from a given text file"""
     with open(txt) as stream:
-        for char in stream:
-            yield char
+        for line in stream:
+            for char in line:
+                yield char
 
 
 def flux_tokenizer(stream=char_stream,

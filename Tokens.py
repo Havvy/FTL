@@ -90,7 +90,8 @@ class INIT(Token):
 
 # Tables declared here to allow cyclic dependencies.
 NEW_LINE.table = {
-    close_paren: TEMPLATE_CLOSE_PAREN
+    close_paren: TEMPLATE_CLOSE_PAREN,
+    at: AT
     }
 
 ARGUMENT_COMMA.table = {
