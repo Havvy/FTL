@@ -2,7 +2,17 @@
 
 
 import re
+debug = True
 
+# Defining regular expressions
+open_paren = "\("
+close_paren = "\)"
+not_close_paren = "^[^)]$"
+new_line = "\n"
+comma = ","
+text = "[a-zA-Z0-9 ]"
+at = "\@"
+equals = "="
 
 class Token(object):
     """Base token class
@@ -20,16 +30,17 @@ class Token(object):
         """Compared values against regex keys in a Token's table
            If a match is found,
         """
-        for key in self.table.keys():
-            #print('-----------------------')
-            #print("Value: {}, Key: {}".format(value, key))
-            #print(re.findall(key, value))
-            #print('-----------------------')
+        for key in self.table: #.keys() not needed in Py3.
+            #if debug:
+            #    print('-----------------------')
+            #    print("Value: {}, Key: {}".format(value, key))
+            #    print(re.findall(key, value))
+            #    print('-----------------------')
             if re.findall(key, value):
                 return self.table[key]
 
 
-# Skeleton tokens
+# Skeleton tokens, actually defined afterwards.
 class NEW_LINE(Token):
     pass
 
@@ -78,27 +89,26 @@ class FLUX_INIT(Token):
 
 
 #Tables! 'cause cyclic dependencies suck
-NEW_LINE.table = {"\)": TEMPLATE_CLOSE_PAREN}
+NEW_LINE.table = {close_paren: TEMPLATE_CLOSE_PAREN}
 
-ARG_COMMA.table = {",": ARG, '\n': NEW_LINE, "^[^)]$": ARG}
+ARG_COMMA.table = {comma: ARG, new_line: NEW_LINE, not_close_paren: ARG}
 
 ARG_EQUALS.table = {"^[^ ]$": DEFAULT_ARG}
 
-TEMPLATE_CLOSE_PAREN.table = {'\n': NEW_LINE}
+TEMPLATE_CLOSE_PAREN.table = {new_line: NEW_LINE}
 
-# "^[^)]$" Matches a single character that is not a close paren
-TEMPLATE_OPEN_PAREN.table = {"\)": TEMPLATE_CLOSE_PAREN, '\n': NEW_LINE,
-                            "^[^)]$": ARG}
+TEMPLATE_OPEN_PAREN.table = {close_paren: TEMPLATE_CLOSE_PAREN, new_line: NEW_LINE,
+                            not_close_paren: ARG}
 
-AT_TEXT.table = {"template\(": TEMPLATE_OPEN_PAREN, '\n': NEW_LINE}
+AT_TEXT.table = {"template\(": TEMPLATE_OPEN_PAREN, new_line: NEW_LINE}
 
-AT.table = {"[a-zA-Z0-9 ]": AT_TEXT, '\n': NEW_LINE}
+AT.table = {text: AT_TEXT, new_line: NEW_LINE}
 
-ARG.table = {"\)": TEMPLATE_CLOSE_PAREN, '\n': NEW_LINE,
-            ',': ARG_COMMA, "=": ARG_EQUALS}
+ARG.table = {close_paren: TEMPLATE_CLOSE_PAREN, new_line: NEW_LINE,
+            comma: ARG_COMMA, equals: ARG_EQUALS}
 
-DEFAULT_ARG.table = {",": ARG_COMMA, "\)": TEMPLATE_CLOSE_PAREN}
+DEFAULT_ARG.table = {comma: ARG_COMMA, close_paren: TEMPLATE_CLOSE_PAREN}
 
 EOF.table = {}
 
-FLUX_INIT.table = {"\@": AT, '\n': NEW_LINE}
+FLUX_INIT.table = {at: AT, new_line: NEW_LINE}
