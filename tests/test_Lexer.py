@@ -5,7 +5,7 @@
 
 import os
 import tempfile
-from FTL import Lexer
+from flux import Lexer
 
 
 class TestTokenizer():
@@ -30,20 +30,20 @@ class TestTokenizer():
                 scope='function')
 
     def test_template_lexing(self, template_stream):
-        tokens = Lexer.flux_tokenizer(template_stream)
+        tokens = Lexer.tokenize(template_stream)
         results = [str(x) for x in tokens]
         print(results)
-        assert  results == ['FLUX_INIT::', 'AT::@', 'AT_TEXT::template',
+        assert  results == ['FLUX::', 'AT::@', 'AT_TEXT::template',
                             'TEMPLATE_OPEN_PAREN::(',
                             'TEMPLATE_CLOSE_PAREN::)',
                             'NEW_LINE::\n', 'EOF::']
 
     def test_template_arg_lexing(self, template_arg_stream):
-        tokens = Lexer.flux_tokenizer(template_arg_stream)
+        tokens = Lexer.tokenize(template_arg_stream)
         results = [str(x) for x in tokens]
         print(results)
-        assert results == ['FLUX_INIT::', 'AT::@', 'AT_TEXT::template',
-                           'TEMPLATE_OPEN_PAREN::(', 'ARG::arg1',
+        assert results == ['FLUX::', 'AT::@', 'AT_TEXT::template',
+                           'TEMPLATE_OPEN_PAREN::(', 'ARGUMENT::arg1',
                            'TEMPLATE_CLOSE_PAREN::)', 'NEW_LINE::\n',
                            'EOF::']
 
