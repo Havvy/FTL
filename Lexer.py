@@ -9,8 +9,10 @@
 """
 
 from flux import Tokens
-debug = True
-example = "examples/complex function.flux"
+debug = False
+#example = "examples/complex function.flux"
+#example = "examples/author.flux"
+example = "examples/escape code.flux"
 
 def char_stream(txt):
     """Yields a stream of characters from a given text file"""
@@ -20,8 +22,7 @@ def char_stream(txt):
                 yield char
 
 
-def tokenize(stream=char_stream,
-                   fluxor=example):
+def tokenize(stream=char_stream, fluxor=example):
     """Reads characters from a stream
        Characters are matched against tokens and a list
        of tokens is returned.
@@ -30,19 +31,16 @@ def tokenize(stream=char_stream,
     # Initialize the current state to the initial token.
     state = Tokens.FLUX()
     token_stream = []
-    context = []; # Treat as a stack.
 
     for char in stream(fluxor):
-        consumed = state.getNextToken(state.consumed + char)
-        # consumed is None if not a token change.
-        next_state = consumed if consumed else state.getNextToken(char)
+        next_state = state.next(char)
 
-        if next_state:
-            # Drop spaces, but instantiate the next Token with the next char.
-            token_stream.append(state)
-            state = next_state(char) if char != ' ' else next_token()
-        else:
+        if isinstance(state, next_state):
             state.consumed += char
+            continue
+
+        token_stream.append(state)
+        state = next_state(char)
 
         if debug:
             print(state)

@@ -14,6 +14,7 @@ text = "[a-zA-Z0-9 ]"
 at = "\@"
 equals = "="
 
+
 class Token(object):
     """Base token class
        Each token will have a 'table' of regex keys and associated Tokens,
@@ -26,18 +27,21 @@ class Token(object):
         """str(Token) => TokenName::CharsConsumed"""
         return str(self.__class__).split('.')[-1][:-2] + '::' + self.consumed
 
-    def lookup(self, char):
-        """Compared values against regex keys in a Token's table
-           If a match is found,
-        """
-        for regex, token in self.table.items():
-            #if debug:
-            #    print('-----------------------')
-            #    print("Value: {}, Key: {}".format(char, regex))
-            #    print(re.findall(regex, char))
-            #    print('-----------------------')
-            if re.findall(regex, char):
+    def _lookup(self, query):
+        for regex, token in table.items():
+            if re.match(regex, query):
                 return token
+
+    def next(self, char):
+        """Compared values against regex keys in a Token's table
+            If a match is found,
+        """
+        for expression in (self.consumed + char, char):
+            result = self._lookup(expression)
+            if result:
+                return result
+
+        return TEXT
 
 
 # Token declarations. Main data declared afterwards.
@@ -45,36 +49,57 @@ class NEW_LINE(Token):
     pass
 
 
-class ARGUMENT_COMMA(Token):
-    pass
+class TEXT(Token):
+    def next(self, char):
+        """Text tokens are special and can morph into other token
+           types if their consumed text and the passed character
+           match in a "next" lookup.
+        """
+        result = self._lookup(self.consumed + char)
 
+        # <Magic type="force a cast of TEXT into another Token">
+        if result and result.__class__ != self.__class__:
+            self.__class__ = result
+            self.consumed += char
+        # </Magic>
 
-class ARGUMENT_EQUALS(Token):
-    pass
+        result = self._lookup(char)
 
-
-class ANONYMOUS_ARGUMENT(Token):
-    pass
-
-
-class TEMPLATE_CLOSE_PAREN(Token):
-    pass
-
-
-class TEMPLATE_OPEN_PAREN(Token):
-    pass
-
-
-class AT_TEXT(Token):
-    pass
+        if result:
+            return result
+        else:
+            return TEXT
 
 
 class AT(Token):
-    """The @ character was read"""
+    pass
+
+
+class COMMA(Token):
+    pass
+
+
+class PERIOD(Token):
+    pass
+
+
+class PERCENT(Token):
+    pass
+
+
+class OPEN_PAREN(Token):
+    pass
+
+
+class CLOSE_PAREN(Token):
     pass
 
 
 class ARGUMENT(Token):
+    pass
+
+
+class EQUALS(Token):
     pass
 
 
@@ -83,53 +108,20 @@ class EOF(Token):
     pass
 
 
-class INIT(Token):
+class FLUX(Token):
     """The first token added to the token stream"""
     pass
 
 
-# Tables declared here to allow cyclic dependencies.
-NEW_LINE.table = {
-    close_paren: TEMPLATE_CLOSE_PAREN,
-    at: AT
-    }
+class ESCAPED(Token):
+    pass
 
-ARGUMENT_COMMA.table = {
-    comma: ARGUMENT,
-    new_line: NEW_LINE,
-    not_close_paren: ARGUMENT}
 
-ARGUMENT_EQUALS.table = {
-    "^[^ ]$": ANONYMOUS_ARGUMENT}
-
-TEMPLATE_CLOSE_PAREN.table = {
-    new_line: NEW_LINE}
-
-TEMPLATE_OPEN_PAREN.table = {
-    close_paren: TEMPLATE_CLOSE_PAREN,
-    new_line: NEW_LINE,
-    not_close_paren: ARGUMENT}
-
-AT_TEXT.table = {
-    "template\(": TEMPLATE_OPEN_PAREN,
-    new_line: NEW_LINE}
-
-AT.table = {
-    text: AT_TEXT,
-    new_line: NEW_LINE}
-
-ARGUMENT.table = {
-    close_paren: TEMPLATE_CLOSE_PAREN,
-    new_line: NEW_LINE,
-    comma: ARGUMENT_COMMA,
-    equals: ARGUMENT_EQUALS}
-
-ANONYMOUS_ARGUMENT.table = {
-    comma: ARGUMENT_COMMA,
-    close_paren: TEMPLATE_CLOSE_PAREN}
-
-EOF.table = {}
-
-INIT.table = {
-    at: AT,
-    new_line: NEW_LINE}
+table = {"\@": AT,
+         "^\($": OPEN_PAREN,
+         "\)": CLOSE_PAREN,
+         "\n": NEW_LINE,
+         ",": COMMA,
+         "=": EQUALS,
+         "\\\.": ESCAPED,
+         "%": PERCENT}
