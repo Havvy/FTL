@@ -1,6 +1,3 @@
-"""Module of token classes used in the Lexer/Parser"""
-
-
 import re
 debug = True
 
@@ -39,13 +36,18 @@ class Token(object):
         for expression in (self.consumed + char, char):
             result = self._lookup(expression)
             if result:
-                return result
+                return result(char)
 
-        return TEXT
+        return TEXT(char)
 
 
 # Token declarations. Main data declared afterwards.
 class NEW_LINE(Token):
+    pass
+
+
+class FLUX(Token):
+    """The first token added to the token stream"""
     pass
 
 
@@ -55,20 +57,21 @@ class TEXT(Token):
            types if their consumed text and the passed character
            match in a "next" lookup.
         """
-        result = self._lookup(self.consumed + char)
-
+        # Lookup consumed + char
         # <Magic type="force a cast of TEXT into another Token">
+        result = self._lookup(self.consumed + char)
         if result and result.__class__ != self.__class__:
             self.__class__ = result
             self.consumed += char
+            return TEXT()
         # </Magic>
 
+        # Lookup char
         result = self._lookup(char)
-
         if result:
-            return result
+            return result(char)
         else:
-            return TEXT
+            return TEXT(char)
 
 
 class AT(Token):
@@ -105,11 +108,6 @@ class EQUALS(Token):
 
 class EOF(Token):
     """End of file token ends each token stream"""
-    pass
-
-
-class FLUX(Token):
-    """The first token added to the token stream"""
     pass
 
 
