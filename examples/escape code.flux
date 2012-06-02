@@ -1,1 +1,1 @@
-\Hi()
+\Hi() @template(arg)
