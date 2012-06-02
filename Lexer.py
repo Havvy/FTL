@@ -33,17 +33,21 @@ def tokenize(stream=char_stream, fluxor=example):
     token_stream = []
 
     for char in stream(fluxor):
-        next_state = state.next(char)
+        lookup_result = state.next(char)
+        next_state = lookup_result
 
-        if isinstance(state, next_state):
+        if isinstance(state, type(next_state)):
             state.consumed += char
             continue
 
         token_stream.append(state)
-        state = next_state(char)
+        state = next_state
 
-        if debug:
-            print(state)
+        # DEBUG!
+        print("Examining char: {}".format(char))
+        print("Current state: {}".format(state))
+        print("Next State: {}".format(next_state))
+        print("Consumed: {}".format(state.consumed))
 
     token_stream.append(state)
     token_stream.append(Tokens.EOF())
