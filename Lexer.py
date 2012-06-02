@@ -8,11 +8,12 @@
         http://flux.referata.com/
 """
 
-from flux import Tokens
-debug = False
-#example = "examples/complex function.flux"
-#example = "examples/author.flux"
-example = "examples/escape code.flux"
+from re import findall
+from collections import namedtuple
+
+
+example = 'examples/complex function.flux'
+
 
 def char_stream(txt):
     """Yields a stream of characters from a given text file"""
@@ -27,33 +28,89 @@ def tokenize(stream=char_stream, fluxor=example):
        Characters are matched against tokens and a list
        of tokens is returned.
     """
-
-    # Initialize the current state to the initial token.
-    state = Tokens.FLUX()
     token_stream = []
+    char_buffer = []
 
     for char in stream(fluxor):
-        lookup_result = state.next(char)
-        next_state = lookup_result
+        char_buffer.append(char)
+        token_stream.extend(lookup(char_buffer))
 
-        if isinstance(state, type(next_state)):
-            state.consumed += char
-            continue
-
-        token_stream.append(state)
-        state = next_state
-
-        # DEBUG!
-        print("Examining char: {}".format(char))
-        print("Current state: {}".format(state))
-        print("Next State: {}".format(next_state))
-        print("Consumed: {}".format(state.consumed))
-
-    token_stream.append(state)
-    token_stream.append(Tokens.EOF())
     return token_stream
+
+
+def _extract_occurance(lst, occurance):
+    """Treats a list of strings as a single string, searching it for
+       the occurances. Matches will be removed from the list. Any
+       text found prior to matches will be returned as a string.
+    """
+    index = ''.join(lst).find(occurance)
+    end = index + len(occurance)
+
+    # Grab any text prior to match for return later
+    text = lst[:index] if index != 0 else None
+
+    to_remove = lst[:end]
+    for char in to_remove:
+        lst.remove(char)
+
+
+    return ''.join(text) if text else None
+
+
+def lookup(iterable):
+    """Examines a buffer and searches for token occurances.
+       Results will be extracted from the buffer (mutating it)
+       and will be returned in a list in order of occurance.
+       Any unmatched characters in the buffer occuring prior
+       to matches will be considered as a TEXT token. As such,
+       the lookup generator may yield between 0 and 2 tokens.
+    """
+    for regex in token_table:
+        matches = findall(regex, ''.join(iterable))
+
+        if matches:
+            match = matches.pop()
+            text = _extract_occurance(iterable, match)
+
+            if text:
+                yield TEXT(text)
+
+            yield token_table[regex](match)
+
+            break
+
+
+def pprint_token_stream(stream):
+    for token in stream:
+        name = token.__doc__.split('(')[0]
+        print("{}:: {}".format(name, token.consumed))
+
+
+# Tokens
+AT = namedtuple("AT", "consumed")
+CLOSE_PAREN = namedtuple("CLOSE_PAREN", "consumed")
+COMMA = namedtuple("COMMA", "consumed")
+ESCAPED = namedtuple("ESCAPED", "consumed")
+EQUALS = namedtuple("EQUALS", "consumed")
+NEW_LINE = namedtuple("NEW_LINE", "consumed")
+OPEN_PAREN = namedtuple("OPEN_PAREN", "consumed")
+PERCENT = namedtuple("PERCENT", "consumed")
+PERIOD = namedtuple("PERIOD", "consumed")
+TEXT = namedtuple("TEXT", "consumed")
+
+
+token_table = {"\@": AT,
+               "\(": OPEN_PAREN,
+               "\)": CLOSE_PAREN,
+               "\n": NEW_LINE,
+               ",": COMMA,
+               "=": EQUALS,
+               "\\\.": ESCAPED,
+               "%": PERCENT}
+
 
 if __name__ == '__main__':
     with open(example) as to_parse:
         print('\nParsing:' + ''.join(to_parse), end='\n\n')
-    print([str(x) for x in tokenize()])
+
+    pprint_token_stream(tokenize())
