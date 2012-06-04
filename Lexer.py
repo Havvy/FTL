@@ -12,7 +12,7 @@ from re import findall
 from collections import namedtuple
 
 
-example = 'examples/link.flux'
+example = 'examples/escape code.flux'
 
 
 def char_stream(txt):
@@ -43,7 +43,12 @@ def _extract_occurance(lst, occurance):
        the occurances. Matches will be removed from the list. Any
        text found prior to matches will be returned as a string.
     """
-    index = ''.join(lst).find(occurance)
+    try:
+        index = ''.join(lst).find(occurance)
+    except TypeError:
+        print(lst)
+        print(occurance)
+        import sys; sys.exit()
     end = index + len(occurance)
 
     # Grab any text prior to match for return later
@@ -108,7 +113,7 @@ token_table = {"\@": AT,
                ",": COMMA,
                "=": EQUALS,
                "\\\[\S]": ESCAPED,
-               "%.+(?=(?<!\\\)\ )": VARIABLE,
+               "%.+(?=(?<!\\\)\s)": VARIABLE,
                "\[\[": OPEN_LINK,
                "\]\]": CLOSE_LINK}
 
