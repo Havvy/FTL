@@ -12,7 +12,7 @@ from re import findall
 from collections import namedtuple
 
 
-example = 'examples/complex function.flux'
+example = 'examples/link.flux'
 
 
 def char_stream(txt):
@@ -94,9 +94,11 @@ ESCAPED = namedtuple("ESCAPED", "consumed")
 EQUALS = namedtuple("EQUALS", "consumed")
 NEW_LINE = namedtuple("NEW_LINE", "consumed")
 OPEN_PAREN = namedtuple("OPEN_PAREN", "consumed")
-PERCENT = namedtuple("PERCENT", "consumed")
 PERIOD = namedtuple("PERIOD", "consumed")
 TEXT = namedtuple("TEXT", "consumed")
+VARIABLE = namedtuple("VARIABLE", "consumed")
+OPEN_LINK = namedtuple("OPEN_LINK", "consumed")
+CLOSE_LINK = namedtuple("CLOSE_LINK", "consumed")
 
 
 token_table = {"\@": AT,
@@ -105,8 +107,10 @@ token_table = {"\@": AT,
                "\n": NEW_LINE,
                ",": COMMA,
                "=": EQUALS,
-               "\\\.": ESCAPED,
-               "%": PERCENT}
+               "\\\[\S]": ESCAPED,
+               "%.+(?=(?<!\\\)\ )": VARIABLE,
+               "\[\[": OPEN_LINK,
+               "\]\]": CLOSE_LINK}
 
 
 if __name__ == '__main__':
