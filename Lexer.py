@@ -43,12 +43,7 @@ def _extract_occurance(lst, occurance):
        the occurances. Matches will be removed from the list. Any
        text found prior to matches will be returned as a string.
     """
-    try:
-        index = ''.join(lst).find(occurance)
-    except TypeError:
-        print(lst)
-        print(occurance)
-        import sys; sys.exit()
+    index = ''.join(lst).find(occurance)
     end = index + len(occurance)
 
     # Grab any text prior to match for return later
@@ -57,7 +52,6 @@ def _extract_occurance(lst, occurance):
     to_remove = lst[:end]
     for char in to_remove:
         lst.remove(char)
-
 
     return ''.join(text) if text else None
 
@@ -107,15 +101,15 @@ CLOSE_LINK = namedtuple("CLOSE_LINK", "consumed")
 
 
 token_table = {"\@": AT,
-               "\(": OPEN_PAREN,
-               "\)": CLOSE_PAREN,
-               "\n": NEW_LINE,
-               ",": COMMA,
-               "=": EQUALS,
-               "\\\[\S]": ESCAPED,
-               "%.+(?=(?<!\\\)\s)": VARIABLE,
-               "\[\[": OPEN_LINK,
-               "\]\]": CLOSE_LINK}
+        "\(": OPEN_PAREN,
+        "\)": CLOSE_PAREN,
+        "\n": NEW_LINE,
+        ",": COMMA,
+        "=": EQUALS,
+        "\\\[\S]": ESCAPED,
+        "%.+(?=(?<!\\\)\s)": VARIABLE,
+        "\[\[": OPEN_LINK,
+        "\]\]": CLOSE_LINK}
 
 
 if __name__ == '__main__':
