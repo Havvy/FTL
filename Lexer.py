@@ -12,7 +12,7 @@ from re import findall
 from collections import namedtuple
 
 
-example = 'examples/link.flux'
+example = 'examples/escape code.flux'
 
 
 def char_stream(txt):
@@ -52,7 +52,6 @@ def _extract_occurance(lst, occurance):
     to_remove = lst[:end]
     for char in to_remove:
         lst.remove(char)
-
 
     return ''.join(text) if text else None
 
@@ -102,15 +101,15 @@ CLOSE_LINK = namedtuple("CLOSE_LINK", "consumed")
 
 
 token_table = {"\@": AT,
-               "\(": OPEN_PAREN,
-               "\)": CLOSE_PAREN,
-               "\n": NEW_LINE,
-               ",": COMMA,
-               "=": EQUALS,
-               "\\\[\S]": ESCAPED,
-               "%.+(?=(?<!\\\)\ )": VARIABLE,
-               "\[\[": OPEN_LINK,
-               "\]\]": CLOSE_LINK}
+        "\(": OPEN_PAREN,
+        "\)": CLOSE_PAREN,
+        "\n": NEW_LINE,
+        ",": COMMA,
+        "=": EQUALS,
+        "\\\[\S]": ESCAPED,
+        "%.+(?=(?<!\\\)\s)": VARIABLE,
+        "\[\[": OPEN_LINK,
+        "\]\]": CLOSE_LINK}
 
 
 if __name__ == '__main__':
