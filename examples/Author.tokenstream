@@ -1,0 +1,778 @@
+AT:: @
+TEXT:: Homebrew
+OPEN_PAREN:: (
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+TEXT:: {| cellspacing
+EQUALS:: =
+TEXT:: "0" cellpadding
+EQUALS:: =
+TEXT:: "0" class
+EQUALS:: =
+TEXT:: "toccolours author"
+NEW_LINE:: 
+
+TEXT:: |+ This homebrew work was 
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %adopter
+COMMA:: ,
+TEXT::  adopted
+COMMA:: ,
+TEXT::  created
+CLOSE_PAREN:: )
+TEXT::  by
+NEW_LINE:: 
+
+TEXT:: |-
+NEW_LINE:: 
+
+TEXT:: ! colspan
+EQUALS:: =
+TEXT:: "2" class
+EQUALS:: =
+TEXT:: "user" |
+OPEN_LINK:: [[
+TEXT:: Author::
+VARIABLE:: %authorName|
+TEXT::  
+CLOSE_LINK:: ]]
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %adopter
+COMMA:: ,
+TEXT::  
+OPEN_LINK:: [[
+TEXT:: Adopter::
+VARIABLE:: %adopter|
+TEXT::  
+CLOSE_LINK:: ]]
+CLOSE_PAREN:: )
+TEXT::  
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %isnotuser
+COMMA:: ,
+TEXT::  
+NEW_LINE:: 
+
+TEXT:: 	
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %adopter
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 		
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %url
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 			
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %displayName
+COMMA:: ,
+TEXT::  [
+VARIABLE:: %url
+TEXT::  %displayName]
+COMMA:: ,
+TEXT::  [
+VARIABLE:: %url
+TEXT::  %adopter]
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+TEXT:: 			
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %displayName
+COMMA:: ,
+TEXT::  %displayName
+COMMA:: ,
+TEXT::  %adopter
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+TEXT:: 			
+CLOSE_PAREN:: )
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 		
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %url
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 			
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %displayName
+COMMA:: ,
+TEXT::  [
+VARIABLE:: %url
+TEXT::  %displayName]
+COMMA:: ,
+TEXT::  [
+VARIABLE:: %url
+TEXT::  %authorName]
+CLOSE_PAREN:: )
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 			
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %displayName
+COMMA:: ,
+TEXT::  %displayName
+COMMA:: ,
+TEXT::  %authorName
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+TEXT:: 			
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+TEXT:: 		
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+TEXT:: 	
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+TEXT:: 	
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %adopter
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 		
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %url
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 			
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %displayName
+COMMA:: ,
+TEXT::  [
+VARIABLE:: %url
+TEXT::  %displayName
+COMMA:: ,
+TEXT::  [
+VARIABLE:: %url
+TEXT::  
+VARIABLE:: %adopter
+TEXT::  
+CLOSE_PAREN:: )
+TEXT:: ] 
+OPEN_PAREN:: (
+OPEN_LINK:: [[
+TEXT:: User talk:%adopter|talk
+CLOSE_LINK:: ]]
+CLOSE_PAREN:: )
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 			
+OPEN_LINK:: [[
+TEXT:: User:%adopter|
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %displayName
+COMMA:: ,
+TEXT::  %displayName
+COMMA:: ,
+TEXT::  
+VARIABLE:: %adopter
+TEXT::  
+CLOSE_PAREN:: )
+CLOSE_LINK:: ]]
+TEXT::  
+OPEN_PAREN:: (
+OPEN_LINK:: [[
+TEXT:: User talk:%adopter|talk
+CLOSE_LINK:: ]]
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+TEXT:: 			
+CLOSE_PAREN:: )
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 		
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %url
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 			"
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %displayName
+COMMA:: ,
+TEXT::  [
+VARIABLE:: %url
+TEXT::  %displayName
+COMMA:: ,
+TEXT::  [
+VARIABLE:: %url
+TEXT::  
+VARIABLE:: %authorName
+TEXT::  
+CLOSE_PAREN:: )
+TEXT:: ] 
+OPEN_PAREN:: (
+OPEN_LINK:: [[
+TEXT:: User talk:%authorName|talk
+CLOSE_LINK:: ]]
+CLOSE_PAREN:: )
+TEXT:: "
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 			"
+OPEN_LINK:: [[
+TEXT:: User:%authorName|
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %displayName
+COMMA:: ,
+TEXT::  %displayName
+COMMA:: ,
+TEXT::  
+VARIABLE:: %authorName
+TEXT::  
+CLOSE_PAREN:: )
+CLOSE_LINK:: ]]
+TEXT::  
+OPEN_PAREN:: (
+OPEN_LINK:: [[
+TEXT:: User talk:%authorName|talk
+CLOSE_LINK:: ]]
+CLOSE_PAREN:: )
+TEXT:: "
+NEW_LINE:: 
+
+TEXT:: 			
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+TEXT:: 		
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+TEXT:: 	
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %adopter
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 	|-
+NEW_LINE:: 
+
+TEXT:: 	! Original Creator:
+NEW_LINE:: 
+
+TEXT:: 	| 
+VARIABLE:: %authorName
+NEW_LINE:: 
+
+TEXT:: )
+NEW_LINE:: 
+
+TEXT:: |-
+NEW_LINE:: 
+
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %co-authors
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 	|-
+NEW_LINE:: 
+
+TEXT:: 	! Co-Authors:
+NEW_LINE:: 
+
+TEXT:: 	| 
+AT:: @
+TEXT:: split
+OPEN_PAREN:: (
+TEXT:: %co-authors
+COMMA:: ,
+TEXT::  "
+COMMA:: ,
+TEXT:: "
+COMMA:: ,
+TEXT::  
+OPEN_LINK:: [[
+TEXT:: User:%|%
+CLOSE_LINK:: ]]
+OPEN_LINK:: [[
+TEXT:: Author::
+VARIABLE:: %|
+TEXT::  
+CLOSE_LINK:: ]]
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %contributors
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 	|-
+NEW_LINE:: 
+
+TEXT:: 	! Contributors:
+NEW_LINE:: 
+
+TEXT:: 	| 
+AT:: @
+TEXT:: split
+OPEN_PAREN:: (
+TEXT:: %contributors
+COMMA:: ,
+TEXT::  "
+COMMA:: ,
+TEXT:: "
+COMMA:: ,
+TEXT::  %
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+TEXT:: |-
+NEW_LINE:: 
+
+TEXT:: 	! Date Created:
+NEW_LINE:: 
+
+TEXT:: 	| 
+VARIABLE:: %date_created
+TEXT:: 
+
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %adopter
+COMMA:: ,
+TEXT::  
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %date_adopted
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 	|-
+NEW_LINE:: 
+
+TEXT:: 	! Date Adopted:
+NEW_LINE:: 
+
+TEXT:: 	| 
+VARIABLE:: %date_adopted
+NEW_LINE:: 
+
+TEXT:: }
+NEW_LINE:: 
+
+TEXT:: |-
+NEW_LINE:: 
+
+TEXT:: 	! Status:
+NEW_LINE:: 
+
+TEXT:: 	| 
+VARIABLE:: %status
+NEW_LINE:: 
+
+TEXT:: |-
+NEW_LINE:: 
+
+TEXT:: 	! Editing:
+NEW_LINE:: 
+
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+VARIABLE:: %editing|
+NEW_LINE:: 
+
+TEXT::   | 
+VARIABLE:: %editing|
+NEW_LINE:: 
+
+TEXT::   | 
+OPEN_LINK:: [[
+TEXT:: Dungeons and Dragons Wiki:Editing Policy|Clarity edits
+CLOSE_LINK:: ]]
+TEXT::  only please
+NEW_LINE:: 
+
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+TEXT:: |-
+NEW_LINE:: 
+
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %balance
+OPEN_PAREN:: (
+NEW_LINE:: 
+
+TEXT:: 	|-
+NEW_LINE:: 
+
+TEXT:: 	! Balance: 
+NEW_LINE:: 
+
+TEXT:: 	| 
+AT:: @
+TEXT:: switch
+OPEN_PAREN:: (
+TEXT:: %balance
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 		Monk
+EQUALS:: =
+OPEN_LINK:: [[
+TEXT:: Dungeons and Dragons_Wiki:Balance Points#Monk Level|Monk
+CLOSE_LINK:: ]]
+OPEN_LINK:: [[
+TEXT:: Balance Point::Monk| 
+CLOSE_LINK:: ]]
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 		Fighter
+EQUALS:: =
+OPEN_LINK:: [[
+TEXT:: Dungeons and Dragons Wiki:Balance Points#Fighter Level|Fighter
+CLOSE_LINK:: ]]
+OPEN_LINK:: [[
+TEXT:: Balance Point::Fighter| 
+CLOSE_LINK:: ]]
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 		Rogue
+EQUALS:: =
+OPEN_LINK:: [[
+TEXT:: Dungeons and Dragons Wiki:Balance Points#Rogue Level|Rogue
+CLOSE_LINK:: ]]
+OPEN_LINK:: [[
+TEXT:: Balance Point::Rogue| 
+CLOSE_LINK:: ]]
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 		Wizard
+EQUALS:: =
+OPEN_LINK:: [[
+TEXT:: Dungeons and Dragons Wiki:Balance Points#Wizard Level|Wizard
+CLOSE_LINK:: ]]
+OPEN_LINK:: [[
+TEXT:: Balance Point::Wizard| 
+CLOSE_LINK:: ]]
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT::                 Unquantifiable
+EQUALS:: =
+OPEN_LINK:: [[
+TEXT:: Dungeons and Dragons Wiki:Balance Points#Unquantifiable|Unquantifiable
+CLOSE_LINK:: ]]
+OPEN_LINK:: [[
+TEXT:: Balance Point::Unquantifiable| 
+CLOSE_LINK:: ]]
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT::  		Article is not balanced per wiki 
+OPEN_LINK:: [[
+TEXT:: Dungeons_and_Dragons_Wiki:Balance_Points|guidelines
+CLOSE_LINK:: ]]
+OPEN_LINK:: [[
+TEXT:: Balance Point::None Assigned| 
+CLOSE_LINK:: ]]
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 	
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+TEXT:: |-
+NEW_LINE:: 
+
+NEW_LINE:: 
+
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %rating
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 	|-
+NEW_LINE:: 
+
+TEXT:: 	! Rating: 
+NEW_LINE:: 
+
+TEXT:: 	| 
+AT:: @
+TEXT:: ifexpr
+OPEN_PAREN:: (
+TEXT:: %rating>
+EQUALS:: =
+TEXT:: 4
+COMMA:: ,
+TEXT::  This article is a 
+OPEN_LINK:: [[
+TEXT:: Project:Rating Articles|Community Favorite
+CLOSE_LINK:: ]]
+TEXT:: !
+OPEN_LINK:: [[
+TEXT:: Rating::Favorite| 
+CLOSE_LINK:: ]]
+OPEN_LINK:: [[
+TEXT:: Category:Community Favorite
+CLOSE_LINK:: ]]
+COMMA:: ,
+TEXT::  
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %rating>0
+COMMA:: ,
+TEXT::  Most 
+OPEN_LINK:: [[
+TEXT:: Project:Rating Articles|raters
+CLOSE_LINK:: ]]
+TEXT::  like this article!
+OPEN_LINK:: [[
+TEXT:: Rating::Liked| 
+CLOSE_LINK:: ]]
+COMMA:: ,
+TEXT::  
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %rating
+EQUALS:: =
+TEXT:: 0
+COMMA:: ,
+TEXT::  
+OPEN_LINK:: [[
+TEXT:: Project:Rating Articles|Raters
+CLOSE_LINK:: ]]
+TEXT::  equally like and dislike this article.
+OPEN_LINK:: [[
+TEXT:: Rating::Neither| 
+CLOSE_LINK:: ]]
+COMMA:: ,
+TEXT::  
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %rating>-4
+COMMA:: ,
+TEXT::  Most 
+OPEN_LINK:: [[
+TEXT:: Project:Rating Articles|raters
+CLOSE_LINK:: ]]
+TEXT::  dislike this article.
+OPEN_LINK:: [[
+TEXT:: Rating::Disliked| 
+CLOSE_LINK:: ]]
+COMMA:: ,
+TEXT::  The community is generally opposed to this article as written
+OPEN_LINK:: [[
+TEXT:: Project:Deletion Policy#Community Opposed Articles|<big>*</big>
+CLOSE_LINK:: ]]
+TEXT:: .
+OPEN_LINK:: [[
+TEXT:: Rating::Opposed| 
+CLOSE_LINK:: ]]
+OPEN_LINK:: [[
+TEXT:: Category:Community Opposed
+CLOSE_LINK:: ]]
+CLOSE_PAREN:: )
+CLOSE_PAREN:: )
+CLOSE_PAREN:: )
+CLOSE_PAREN:: )
+TEXT:: <br />Check the 
+OPEN_LINK:: [[
+AT:: @
+TEXT:: NAMESPACE
+OPEN_PAREN:: (
+CLOSE_PAREN:: )
+TEXT:: _Talk:
+AT:: @
+TEXT:: pagename
+OPEN_PAREN:: (
+CLOSE_PAREN:: )
+TEXT:: |talk page
+CLOSE_LINK:: ]]
+TEXT::  to see what they're saying!
+NEW_LINE:: 
+
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 	|-
+NEW_LINE:: 
+
+TEXT:: 	| colspan
+EQUALS:: =
+TEXT:: "2" style
+EQUALS:: =
+TEXT:: "text-align:center;" | <!-- Problems :\ -->
+NEW_LINE:: 
+
+NEW_LINE:: 
+
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %img
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 	|- 
+NEW_LINE:: 
+
+TEXT:: 	| colspan
+EQUALS:: =
+TEXT:: "2" style
+EQUALS:: =
+TEXT:: "text-align:center;" |  
+NEW_LINE:: 
+
+TEXT:: 	|-
+NEW_LINE:: 
+
+TEXT:: 	| colspan
+EQUALS:: =
+TEXT:: "2" style
+EQUALS:: =
+TEXT:: "text-align:center;" | 
+OPEN_LINK:: [[
+TEXT:: Image:%img|%imgsize|200px
+CLOSE_LINK:: ]]
+NEW_LINE:: 
+
+TEXT:: 	
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %caption
+COMMA:: ,
+NEW_LINE:: 
+
+TEXT:: 		|-
+NEW_LINE:: 
+
+TEXT:: 		| colspan
+EQUALS:: =
+TEXT:: "2" | 
+VARIABLE:: %caption
+NEW_LINE:: 
+
+TEXT:: 	
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+TEXT:: 	
+NEW_LINE:: 
+
+CLOSE_PAREN:: )
+NEW_LINE:: 
+
+TEXT:: |}
+AT:: @
+TEXT:: if
+OPEN_PAREN:: (
+TEXT:: %raters
+COMMA:: ,
+TEXT::  <span style
+EQUALS:: =
+TEXT:: "display:none">
+AT:: @
+TEXT:: split
+OPEN_PAREN:: (
+TEXT:: %raters
+COMMA:: ,
+TEXT::  '
+COMMA:: ,
+TEXT:: '
+COMMA:: ,
+TEXT::  
+OPEN_LINK:: [[
+TEXT:: Rated By::%
+CLOSE_LINK:: ]]
+CLOSE_PAREN:: )
+TEXT:: </span>
+CLOSE_PAREN:: )
+AT:: @
+TEXT:: Pagedata
+OPEN_PAREN:: (
+CLOSE_PAREN:: )
