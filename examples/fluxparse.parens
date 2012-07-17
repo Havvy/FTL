@@ -1,15 +1,20 @@
 (flux
+  // Immediately create 'line's to hold top-level children?
   (line
+    // Split template tokens into two objects?
     (template (name "Homebrew")))
   (line
     (text "{| cellspacing=\"0\" cellpadding=\"0\" class=\"toccolours author\""))
   (line
     (text "|+ This homebrew work was ")
     (template (name "if")
+              // Okay, each child of a template must be an argument
               (argument (parameter "adopter"))
               (argument "adopted")
               (argument "created"))
     (text " by"))
+  // How do we know that this 'text' is top-level as opposed to previous?
+  // Simply by the newline?
   (line (text "|-"))
   (line
     (text "! colspan=\"2\" class=\"user\" |[[Author::")
