@@ -1,8 +1,8 @@
 import tempfile
 import pytest
 import os
-from flux.Lexer import *
-from flux import Lexer
+from FTL.Lexer import *
+from FTL import Lexer
 
 # Example files
 examples = '../examples'
