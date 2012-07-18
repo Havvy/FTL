@@ -8,8 +8,7 @@
         http://flux.referata.com/
 """
 
-from Lexer import (AT, CLOSE_PAREN, COMMA, ESCAPED, EQUALS, NEW_LINE,
-                   OPEN_PAREN, PERIOD, TEXT, VAR, OPEN_LINK, CLOSE_LINK)
+from NODES import (ALL, TEMPLATE, )
 
 """
 FLUX
@@ -25,7 +24,7 @@ FLUX
 
 
 class Node():
-    legal_children = ('*')
+    legal_children = (ALL)
 
     def __init__(self):
         self.children = []
@@ -54,6 +53,7 @@ class Line(Node):
 
 class Template(Node):
     legal_children = ()
+    pattern = (AT, ALL,
 
     def __init__(self, name, *args, **kwargs):
         super()
@@ -68,13 +68,13 @@ class Template(Node):
 
 class Link(Node):
     legal_children = ()
-    pattern = (OPEN_LINK, '*', CLOSE_LINK)
+    pattern = (OPEN_LINK, ALL, CLOSE_LINK)
 
     def __init__(self, name, dest):
         super()
         self.name = name
         self.destination = dest
-        # TODO: This isn't good enough:
+        # TODO: This is only good enough for now
         self.local = dest.startswith('http://')
 
 
