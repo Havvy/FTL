@@ -12,7 +12,7 @@ from re import findall
 from collections import namedtuple
 
 
-example = 'examples/escape code.flux'
+example = 'examples/function with arguments.flux'
 
 
 def char_stream(txt):
