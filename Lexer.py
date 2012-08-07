@@ -12,26 +12,26 @@ from re import findall
 from collections import namedtuple
 
 
-example = 'examples/function with arguments.flux'
+example = 'examples/escape code.flux'
 
 
-def char_stream(txt):
-    """Yields a stream of characters from a given text file"""
-    with open(txt) as stream:
-        for line in stream:
-            for char in line:
-                yield char
-
-
-def tokenize(stream=char_stream, fluxor=example):
+def tokenize(fluxor=example):
     """Reads characters from a stream
        Characters are matched against tokens and a list
        of tokens is returned.
     """
+    def characters(txt):
+        """Yields a stream of characters from a given text file"""
+        with open(txt) as stream:
+            for line in stream:
+                for char in line:
+                    yield char
+
+
     token_stream = []
     char_buffer = []
 
-    for char in stream(fluxor):
+    for char in characters(fluxor):
         char_buffer.append(char)
         token_stream.extend(lookup(char_buffer))
 

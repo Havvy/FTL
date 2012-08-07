@@ -16,12 +16,12 @@
 	)
 	@if(%adopter,
 		@if(%url,
-			@if(%displayName, [%url %displayName, [%url %adopter )] ([[User talk:%adopter|talk]]),
-			[[User:%adopter|@if(%displayName, %displayName, %adopter )]] ([[User talk:%adopter|talk]])
+			@if(%displayName, [%url %displayName], [%url %adopter]) ([[User talk:%adopter|talk]]),
+			[[User:%adopter|@if(%displayName, %displayName, %adopter)]] ([[User talk:%adopter|talk]])
 			),
 		@if(%url,
-			"@if(%displayName, [%url %displayName, [%url %authorName )] ([[User talk:%authorName|talk]])",
-			"[[User:%authorName|@if(%displayName, %displayName, %authorName )]] ([[User talk:%authorName|talk]])"
+			"@if(%displayName, [%url %displayName], [%url %authorName]) ([[User talk:%authorName|talk]])",
+			"[[User:%authorName|@if(%displayName, %displayName, %authorName)]] ([[User talk:%authorName|talk]])"
 			)
 		)
 	)
