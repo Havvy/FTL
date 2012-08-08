@@ -8,8 +8,8 @@
         http://flux.referata.com/
 """
 
-from NODES import (ALL, TEMPLATE, )
-
+from Lexer import (AT, CLOSE_PAREN, COMMA, ESCAPED, EQUALS, NEW_LINE,
+                   OPEN_PAREN, PERIOD, TEXT, VARIABLE, OPEN_LINK, CLOSE_LINK)
 """
 FLUX
   LINE
@@ -21,6 +21,13 @@ FLUX
       TEXT
     VARIABLE
 """
+
+
+class ALL():
+    """Temporary class. This will be replaced when I can think of where
+    to best put the damn thing.
+    """
+    pass
 
 
 class Node():
@@ -53,7 +60,7 @@ class Line(Node):
 
 class Template(Node):
     legal_children = ()
-    pattern = (AT, ALL,
+    pattern = (AT, ALL)
 
     def __init__(self, name, *args, **kwargs):
         super()
