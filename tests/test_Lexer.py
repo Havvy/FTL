@@ -1,6 +1,8 @@
 import tempfile
 import pytest
 import os
+
+from FTL.tokens import *
 from FTL.Lexer import *
 from FTL import Lexer
 
@@ -50,7 +52,7 @@ test_result_pairs = (
 
 @pytest.mark.parametrize(('char_stream', 'token_stream'), test_result_pairs)
 def test_Tokenize(char_stream, token_stream):
-    assert tokenize(fluxor=char_stream) == token_stream
+    assert tokenize(char_stream) == token_stream
 
 
 class TestCharStream():
@@ -68,10 +70,6 @@ class TestCharStream():
         """Creates and returns a temp file for reading"""
         return request.cached_setup(self.setup_read, self.teardown_read,
                                     scope='class')
-
-    def test_char_stream(self, read):
-        assert list(char_stream(read)) == ['a', 'b', 'c', 'd']
-
 
 class TestExtractOccurance():
     def setup_lst(self):
