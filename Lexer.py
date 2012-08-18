@@ -8,8 +8,11 @@
         http://flux.referata.com/
 """
 
+import argparse
 from re import findall
 from collections import namedtuple
+
+from FTL.tokens import token_table, TEXT
 
 
 example = 'examples/escape code.flux'
@@ -85,35 +88,36 @@ def pprint_token_stream(stream):
         print("{}:: {}".format(name, token.consumed))
 
 
-# Tokens
-AT = namedtuple("AT", "consumed")
-CLOSE_PAREN = namedtuple("CLOSE_PAREN", "consumed")
-COMMA = namedtuple("COMMA", "consumed")
-ESCAPED = namedtuple("ESCAPED", "consumed")
-EQUALS = namedtuple("EQUALS", "consumed")
-NEW_LINE = namedtuple("NEW_LINE", "consumed")
-OPEN_PAREN = namedtuple("OPEN_PAREN", "consumed")
-PERIOD = namedtuple("PERIOD", "consumed")
-TEXT = namedtuple("TEXT", "consumed")
-VARIABLE = namedtuple("VARIABLE", "consumed")
-OPEN_LINK = namedtuple("OPEN_LINK", "consumed")
-CLOSE_LINK = namedtuple("CLOSE_LINK", "consumed")
-
-
-token_table = {"\@": AT,
-        "\(": OPEN_PAREN,
-        "\)": CLOSE_PAREN,
-        "\n": NEW_LINE,
-        ",": COMMA,
-        "=": EQUALS,
-        "\\\[\S]": ESCAPED,
-        "%.+(?=(?<!\\\)\s)": VARIABLE,
-        "\[\[": OPEN_LINK,
-        "\]\]": CLOSE_LINK}
-
-
 if __name__ == '__main__':
-    with open(example) as to_parse:
-        print('\nParsing:' + ''.join(to_parse), end='\n\n')
+    parser = argparse.ArgumentParser(description="""Description here""")
 
-    pprint_token_stream(tokenize())
+    # args.to_lex
+    # Which file to lex
+    parser.add_argument("to_lex", help="File that you wanna lex")
+
+    # args.debug
+    # Use logging: http://docs.python.org/py3k/library/logging.html
+    parser.add_argument("-D", "--debug", help="Send debug messages to stdout",
+                        action="store_true")
+
+    #args.nodoc
+    # Will we just drop comment or doc tokens from the stream?
+    parser.add_argument("-d", "--nodoc", help="Omit documentation",
+                        action="store_true")
+
+    #args.output
+    # Just stdout or also stderr?
+    parser.add_argument("-o", "--output", help="Redirect output to given file",
+                        action="store")
+
+    #args.autodoc
+    # Not a clue what this is
+    parser.add_argument("-a", "--autodoc", help="Do stuff I don't know yet",
+                        action="store")
+
+    args = parser.parse_args()
+
+    with open(args.to_lex) as to_lex:
+        print('\nParsing:' + ''.join(to_lex), end='\n\n')
+
+    pprint_token_stream(tokenize(args.to_lex))
