@@ -8,8 +8,8 @@
         http://flux.referata.com/
 """
 
-from Lexer import (AT, CLOSE_PAREN, COMMA, ESCAPED, EQUALS, NEW_LINE,
-                   OPEN_PAREN, PERIOD, TEXT, VARIABLE, OPEN_LINK, CLOSE_LINK)
+from tokens import (AT, CLOSE_PAREN, COMMA, ESCAPED, EQUALS, NEW_LINE,
+                    OPEN_PAREN, PERIOD, TEXT, VARIABLE, OPEN_LINK, CLOSE_LINK)
 """
 FLUX
   LINE
@@ -27,7 +27,9 @@ class ALL():
     """Temporary class. This will be replaced when I can think of where
     to best put the damn thing.
     """
-    pass
+    @classmethod
+    def equals(cls, other):
+        return True
 
 
 class Node():
@@ -35,6 +37,10 @@ class Node():
 
     def __init__(self):
         self.children = []
+
+    @classmethod
+    def equals(cls, other):
+        return isinstance(other, cls)
 
     @property
     @classmethod
@@ -92,6 +98,22 @@ class Text(Node):
     def __init__(self, content):
         super()
         self.content = content
+
+
+def extra_lex(stream, target):
+    for index, token in enumerate(stream):
+        ix = index
+        for desired in target:
+            if isinstance(desired, Node):
+                if not stream[ix] == desired:
+                    break
+            else:
+                if not isinstance(stream[ix], desired):
+                    break
+            ix += 1
+        else:
+            return index, ix
+
 
 if __name__ == '__main__':
     root = Flux()

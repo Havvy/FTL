@@ -10,15 +10,14 @@
 
 import argparse
 from re import findall
-from collections import namedtuple
 
-from FTL.tokens import token_table, TEXT
+from FTL.tokens import tokens, TEXT
 
 
 example = 'examples/escape code.flux'
 
 
-def tokenize(fluxor=example):
+def tokenize(fluxor:str=example) -> 'ten':
     """Reads characters from a stream
        Characters are matched against tokens and a list
        of tokens is returned.
@@ -29,7 +28,6 @@ def tokenize(fluxor=example):
             for line in stream:
                 for char in line:
                     yield char
-
 
     token_stream = []
     char_buffer = []
@@ -67,8 +65,13 @@ def lookup(iterable):
        to matches will be considered as a TEXT token. As such,
        the lookup generator may yield between 0 and 2 tokens.
     """
-    for regex in token_table:
-        matches = findall(regex, ''.join(iterable))
+    for token in tokens:
+        #try:
+        matches = findall(token.pattern, ''.join(iterable))
+
+        #except:
+            #import ipdb; ipdb.set_trace()  # XXX BREAKPOINT
+            #print("foo")
 
         if matches:
             match = matches.pop()
@@ -77,15 +80,14 @@ def lookup(iterable):
             if text:
                 yield TEXT(text)
 
-            yield token_table[regex](match)
-
+            yield token(match)
             break
 
 
 def pprint_token_stream(stream):
     for token in stream:
-        name = token.__doc__.split('(')[0]
-        print("{}:: {}".format(name, token.consumed))
+        consumed = '(\\n)' if token.consumed == '\n' else token.consumed
+        print("{}:: {}".format(token.name(), consumed))
 
 
 if __name__ == '__main__':
@@ -118,6 +120,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     with open(args.to_lex) as to_lex:
-        print('\nParsing:' + ''.join(to_lex), end='\n\n')
+        print('\nParsing:' + ''.join(to_lex))
+        print('\n\n')
 
     pprint_token_stream(tokenize(args.to_lex))
