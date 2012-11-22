@@ -66,12 +66,7 @@ def lookup(iterable):
        the lookup generator may yield between 0 and 2 tokens.
     """
     for token in tokens:
-        #try:
         matches = findall(token.pattern, ''.join(iterable))
-
-        #except:
-            #import ipdb; ipdb.set_trace()  # XXX BREAKPOINT
-            #print("foo")
 
         if matches:
             match = matches.pop()
