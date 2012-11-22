@@ -17,7 +17,7 @@ from FTL.tokens import tokens, TEXT
 example = 'examples/escape code.flux'
 
 
-def tokenize(fluxor:str=example) -> 'ten':
+def tokenize(fluxor=example):
     """Reads characters from a stream
        Characters are matched against tokens and a list
        of tokens is returned.

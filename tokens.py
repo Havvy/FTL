@@ -1,4 +1,5 @@
 class Token():
+
     def __init__(self, consumed):
         self.consumed = consumed
 
@@ -56,12 +57,12 @@ class CLOSE_ILINK(Token):
 
 
 class OPEN_ELINK(Token):
-    pattern = "(?<!\[)\[(?>!\[)"
+    pattern = "(?<!\[)\[(?!\[)"
 
 
 class CLOSE_ELINK(Token):
-    pattern = "(?<!\])\](?>!\])"
+    pattern = "(?<!\])\](?!\])"
 
 
-tokens = (TEXT, AT, OPEN_PAREN, CLOSE_PAREN, COMMA, ESCAPED, NEW_LINE,
-          VARIABLE, OPEN_ILINK, CLOSE_ILINK, OPEN_ELINK, OPEN_ILINK)
+tokens = (AT, CLOSE_ILINK, CLOSE_PAREN, COMMA, EQUALS, ESCAPED, NEW_LINE,
+          OPEN_ILINK, OPEN_PAREN, VARIABLE, OPEN_ELINK, CLOSE_ELINK)

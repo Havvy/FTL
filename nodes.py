@@ -78,10 +78,13 @@ class Template(Node):
     legal_children = ()
     pattern = ('AT', 'ALL', 'OPEN_PAREN', 'ALL', 'CLOSE_PAREN')
 
-    def __init__(self, name, **kwargs):
+    def __init__(self, name, *args, **kwargs):
         super()
         self.args = {'name': name}
         self.args.update(kwargs)
+
+        for index, arg in enumerate(args):
+            self.args[str(index)] = arg
 
 
 class Link(Node):
@@ -102,30 +105,6 @@ class Text(Node):
     def __init__(self, content):
         super()
         self.content = content
-
-
-def extra_lex(stream, target):
-    """Not a clue what this is attempting to accomplish.
-
-    What's the target?
-
-    Checks to see if node from a stream is in target. Perhaps
-    this is an attempt to allow the 'ALL' node to function. If
-    so, it is unnecessary as the 'ALL' node has an overridden
-    __eq__ method that handles this.
-    """
-    for index, token in enumerate(stream):
-        ix = index
-        for desired in target:
-            if isinstance(desired, Node):
-                if not stream[ix] == desired:
-                    break
-            else:
-                if not isinstance(stream[ix], desired):
-                    break
-            ix += 1
-        else:
-            return index, ix
 
 
 if __name__ == '__main__':
