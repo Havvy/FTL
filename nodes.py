@@ -23,17 +23,24 @@ FLUX
 """
 
 
+class IllegalChildException(Exception):
+    pass
+
+
 class ALL():
     """Temporary class. This will be replaced when I can think of where
     to best put the damn thing.
     """
+    def __eq__(self, other):
+        return True
+
     @classmethod
     def equals(cls, other):
         return True
 
 
 class Node():
-    legal_children = (ALL)
+    legal_children = ('ALL')
 
     def __init__(self):
         self.children = []
@@ -49,11 +56,14 @@ class Node():
 
     @classmethod
     def legal_child(cls, child):
-        return child in cls.legal_children
+        return child.name in cls.legal_children
 
     def add_child(self, child):
         if self.legal_children(child):
             self.children.append(child)
+        else:
+            raise IllegalChildException(
+                "{} is not a legal child of {}".format(child.name, self.name))
 
 
 class Flux(Node):
@@ -61,33 +71,27 @@ class Flux(Node):
 
 
 class Line(Node):
-    pass
+    legal_children = ('ALL')
 
 
 class Template(Node):
     legal_children = ()
-    pattern = (AT, ALL)
+    pattern = ('AT', 'ALL', 'OPEN_PAREN', 'ALL', 'CLOSE_PAREN')
 
-    def __init__(self, name, *args, **kwargs):
+    def __init__(self, name, **kwargs):
         super()
         self.args = {'name': name}
-
-        count = 1
-        for arg in args:
-            args[count] = arg
-
-        args.update(kwargs)
+        self.args.update(kwargs)
 
 
 class Link(Node):
     legal_children = ()
-    pattern = (OPEN_LINK, ALL, CLOSE_LINK)
+    pattern = ('OPEN_LINK', 'ALL', 'CLOSE_LINK')
 
     def __init__(self, name, dest):
         super()
         self.name = name
         self.destination = dest
-        # TODO: This is only good enough for now
         self.local = dest.startswith('http://')
 
 
@@ -101,6 +105,15 @@ class Text(Node):
 
 
 def extra_lex(stream, target):
+    """Not a clue what this is attempting to accomplish.
+
+    What's the target?
+
+    Checks to see if node from a stream is in target. Perhaps
+    this is an attempt to allow the 'ALL' node to function. If
+    so, it is unnecessary as the 'ALL' node has an overridden
+    __eq__ method that handles this.
+    """
     for index, token in enumerate(stream):
         ix = index
         for desired in target:
