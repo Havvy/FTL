@@ -1,15 +1,17 @@
 """Flux Lexer
     requirements: Python 3
 
-    Flux is an attempt to create kinder markup language than WikiMedia's
-    WikiCode, and this Lexer is the beginning.
+    Flux is an attempt to create a kinder markup language than WikiMedia's
+    WikiCode, and this Lexer is the beginning of the toolchain.
 
     For more information, visit the project's wiki:
         http://flux.referata.com/
 """
 
+
 import argparse
-from re import findall
+from re import finditer
+from copy import copy
 
 from FTL.tokens import tokens, TEXT
 
@@ -18,65 +20,54 @@ example = 'examples/escape code.flux'
 
 
 def tokenize(fluxor=example):
-    """Reads characters from a stream
-       Characters are matched against tokens and a list
-       of tokens is returned.
-    """
-    def characters(txt):
-        """Yields a stream of characters from a given text file"""
-        with open(txt) as stream:
-            for line in stream:
-                for char in line:
-                    yield char
-
+    """Reads lines from given file path and produces an iterable of tokens"""
     token_stream = []
-    char_buffer = []
 
-    for char in characters(fluxor):
-        char_buffer.append(char)
-        token_stream.extend(lookup(char_buffer))
+    with open(fluxor) as stream:
+        for line in stream:
+            token_stream.extend(lookup(line))
 
     return token_stream
 
 
-def _extract_occurance(lst, occurance):
-    """Treats a list of strings as a single string, searching it for
-       the occurances. Matches will be removed from the list. Any
-       text found prior to matches will be returned as a string.
-    """
-    index = ''.join(lst).find(occurance)
-    end = index + len(occurance)
-
-    # Grab any text prior to match for return later
-    text = lst[:index] if index != 0 else None
-
-    to_remove = lst[:end]
-    for char in to_remove:
-        lst.remove(char)
-
-    return ''.join(text) if text else None
-
-
 def lookup(iterable):
-    """Examines a buffer and searches for token occurances.
-       Results will be extracted from the buffer (mutating it)
-       and will be returned in a list in order of occurance.
-       Any unmatched characters in the buffer occuring prior
-       to matches will be considered as a TEXT token. As such,
-       the lookup generator may yield between 0 and 2 tokens.
+    """Creates a list of tokens found in a string
+
+    Creates a list of tokens in order their occurance in the given iterable.
+    Any length of characters in the iterable that do not match any token will
+    be tokenized as a TEXT token.
     """
+    # Find all of the matches and create a list of tokens based on matches
+    matches = []
     for token in tokens:
-        matches = findall(token.pattern, ''.join(iterable))
+        for match in finditer(token.pattern, iterable):
+            matches.append(token(match.group(),
+                                 match.start(),
+                                 match.end()))
 
-        if matches:
-            match = matches.pop()
-            text = _extract_occurance(iterable, match)
+    matches.sort(key=lambda x: x.start)
 
-            if text:
-                yield TEXT(text)
+    # Find any characters in the string that didn't match a token and
+    # tokenize them as TEXT and insert them into the list of tokens
+    current_index = 0
+    added_texts = 0
+    for index, match in enumerate(copy(matches)):
+        if match.start > current_index:
+            matches.insert(index + added_texts,
+                           TEXT(iterable[current_index:match.start],
+                                current_index,
+                                match.start))
+            added_texts += 1
 
-            yield token(match)
-            break
+        current_index = match.end
+
+    # Catch any unmatched characters that follow the last token as TEXT
+    if current_index < len(iterable):
+        matches.append(TEXT(iterable[current_index:],
+                            current_index,
+                            len(iterable)))
+
+    return matches
 
 
 def pprint_token_stream(stream):

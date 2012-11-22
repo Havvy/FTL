@@ -1,7 +1,9 @@
 class Token():
 
-    def __init__(self, consumed):
+    def __init__(self, consumed, start, end):
         self.consumed = consumed
+        self.start = start
+        self.end = end
 
     @classmethod
     def equals(cls, other):
@@ -45,7 +47,7 @@ class NEW_LINE(Token):
 
 
 class VARIABLE(Token):
-    pattern = "%\w+(?=\W)"
+    pattern = "%\w+"
 
 
 class OPEN_ILINK(Token):
