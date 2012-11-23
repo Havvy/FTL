@@ -8,8 +8,8 @@
         http://flux.referata.com/
 """
 
-from Lexer import (AT, CLOSE_PAREN, COMMA, ESCAPED, EQUALS, NEW_LINE,
-                   OPEN_PAREN, PERIOD, TEXT, VARIABLE, OPEN_LINK, CLOSE_LINK)
+from tokens import (AT, CLOSE_PAREN, COMMA, ESCAPED, EQUALS, NEW_LINE,
+                    OPEN_PAREN, PERIOD, TEXT, VARIABLE, OPEN_LINK, CLOSE_LINK)
 """
 FLUX
   LINE
@@ -23,18 +23,31 @@ FLUX
 """
 
 
+class IllegalChildException(Exception):
+    pass
+
+
 class ALL():
     """Temporary class. This will be replaced when I can think of where
     to best put the damn thing.
     """
-    pass
+    def __eq__(self, other):
+        return True
+
+    @classmethod
+    def equals(cls, other):
+        return True
 
 
 class Node():
-    legal_children = (ALL)
+    legal_children = ('ALL')
 
     def __init__(self):
         self.children = []
+
+    @classmethod
+    def equals(cls, other):
+        return isinstance(other, cls)
 
     @property
     @classmethod
@@ -43,11 +56,14 @@ class Node():
 
     @classmethod
     def legal_child(cls, child):
-        return child in cls.legal_children
+        return child.name in cls.legal_children
 
     def add_child(self, child):
         if self.legal_children(child):
             self.children.append(child)
+        else:
+            raise IllegalChildException(
+                "{} is not a legal child of {}".format(child.name, self.name))
 
 
 class Flux(Node):
@@ -55,33 +71,30 @@ class Flux(Node):
 
 
 class Line(Node):
-    pass
+    legal_children = ('ALL')
 
 
 class Template(Node):
     legal_children = ()
-    pattern = (AT, ALL)
+    pattern = ('AT', 'ALL', 'OPEN_PAREN', 'ALL', 'CLOSE_PAREN')
 
     def __init__(self, name, *args, **kwargs):
         super()
         self.args = {'name': name}
+        self.args.update(kwargs)
 
-        count = 1
-        for arg in args:
-            args[count] = arg
-
-        args.update(kwargs)
+        for index, arg in enumerate(args):
+            self.args[str(index)] = arg
 
 
 class Link(Node):
     legal_children = ()
-    pattern = (OPEN_LINK, ALL, CLOSE_LINK)
+    pattern = ('OPEN_LINK', 'ALL', 'CLOSE_LINK')
 
     def __init__(self, name, dest):
         super()
         self.name = name
         self.destination = dest
-        # TODO: This is only good enough for now
         self.local = dest.startswith('http://')
 
 
@@ -92,6 +105,7 @@ class Text(Node):
     def __init__(self, content):
         super()
         self.content = content
+
 
 if __name__ == '__main__':
     root = Flux()

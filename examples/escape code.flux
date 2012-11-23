@@ -1,1 +1,1 @@
-\Hi() @template(arg) and a %variable or %v\ ar\ iable
+\Hi() @template(arg) and a %variable 

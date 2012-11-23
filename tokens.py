@@ -1,27 +1,70 @@
-from collections import namedtuple
+class Token():
 
-# Tokens
-AT = namedtuple("AT", "consumed")
-CLOSE_PAREN = namedtuple("CLOSE_PAREN", "consumed")
-COMMA = namedtuple("COMMA", "consumed")
-ESCAPED = namedtuple("ESCAPED", "consumed")
-EQUALS = namedtuple("EQUALS", "consumed")
-NEW_LINE = namedtuple("NEW_LINE", "consumed")
-OPEN_PAREN = namedtuple("OPEN_PAREN", "consumed")
-PERIOD = namedtuple("PERIOD", "consumed")
-TEXT = namedtuple("TEXT", "consumed")
-VARIABLE = namedtuple("VARIABLE", "consumed")
-OPEN_LINK = namedtuple("OPEN_LINK", "consumed")
-CLOSE_LINK = namedtuple("CLOSE_LINK", "consumed")
+    def __init__(self, consumed, start, end):
+        self.consumed = consumed
+        self.start = start
+        self.end = end
+
+    @classmethod
+    def equals(cls, other):
+        return isinstance(other, cls)
+
+    @classmethod
+    def name(cls):
+        return cls.__name__
 
 
-token_table = {"\@": AT,
-        "\(": OPEN_PAREN,
-        "\)": CLOSE_PAREN,
-        "\n": NEW_LINE,
-        ",": COMMA,
-        "=": EQUALS,
-        "\\\[\S]": ESCAPED,
-        "%.+(?=(?<!\\\)\s)": VARIABLE,
-        "\[\[": OPEN_LINK,
-        "\]\]": CLOSE_LINK}
+class TEXT(Token):
+    pattern = "."
+
+
+class AT(Token):
+    pattern = "\@"
+
+
+class OPEN_PAREN(Token):
+    pattern = "\("
+
+
+class CLOSE_PAREN(Token):
+    pattern = "\)"
+
+
+class COMMA(Token):
+    pattern = ","
+
+
+class ESCAPED(Token):
+    pattern = "\\\[\S]"
+
+
+class EQUALS(Token):
+    pattern = "="
+
+
+class NEW_LINE(Token):
+    pattern = "\n"
+
+
+class VARIABLE(Token):
+    pattern = "%\w+"
+
+
+class OPEN_ILINK(Token):
+    pattern = "\[\["
+
+
+class CLOSE_ILINK(Token):
+    pattern = "\]\]"
+
+
+class OPEN_ELINK(Token):
+    pattern = "(?<!\[)\[(?!\[)"
+
+
+class CLOSE_ELINK(Token):
+    pattern = "(?<!\])\](?!\])"
+
+
+tokens = (AT, CLOSE_ILINK, CLOSE_PAREN, COMMA, EQUALS, ESCAPED, NEW_LINE,
+          OPEN_ILINK, OPEN_PAREN, VARIABLE, OPEN_ELINK, CLOSE_ELINK)
