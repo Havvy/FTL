@@ -73,8 +73,10 @@ def lookup(iterable):
 def pprint_token_stream(stream):
     for token in stream:
         consumed = '(\\n)' if token.consumed == '\n' else token.consumed
-        print("{}:: {}".format(token.name(), consumed))
-
+        print("{}:: {} @ ({}, {})".format(token.name(),
+                                          consumed,
+                                          token.start,
+                                          token.end))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="""Description here""")

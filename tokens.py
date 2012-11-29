@@ -1,5 +1,14 @@
-class Token():
+"""Flux Tokens
+    requirements: Python 3
 
+    Tokens for use in the Flux lexer
+
+    For more information, visit the project's wiki:
+        http://flux.referata.com/
+"""
+
+
+class Token():
     def __init__(self, consumed, start, end):
         self.consumed = consumed
         self.start = start
@@ -12,6 +21,12 @@ class Token():
     @classmethod
     def name(cls):
         return cls.__name__
+
+    def __eq__(self, other):
+        for attrib in ("pattern", "consumed", "start", "end"):
+            if getattr(self, attrib) != getattr(other, attrib):
+                return False
+        return True
 
 
 class TEXT(Token):
